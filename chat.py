@@ -1,10 +1,13 @@
 import random
 import json
+import re
 
+from sqlalchemy import text
 import torch
-
 from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
+
+from order import get_order_status
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -24,10 +27,13 @@ model_state = data["model_state"]
 model = NeuralNet(input_size, hidden_size, output_size).to(device)
 model.load_state_dict(model_state)
 model.eval()
-
+# TODO: update name after demo
 bot_name = "Sam"
 
-def get_response(msg):
+def get_response(msg, username,db):
+    if msg.isnumeric():
+         return get_order_status(msg, "Invalid order id",db)
+    
     sentence = tokenize(msg)
     X = bag_of_words(sentence, all_words)
     X = X.reshape(1, X.shape[0])
@@ -42,10 +48,23 @@ def get_response(msg):
     prob = probs[0][predicted.item()]
     if prob.item() > 0.75:
         for intent in intents['intents']:
+            print("intent ", intent["tag"])
             if tag == intent["tag"]:
-                return random.choice(intent['responses'])
+                responseText = random.choice(intent['responses'])
+                if tag == "greeting":
+                    return responseText.replace("${name}", username)
+                elif tag == "order":
+                    order_id = re.findall(r'\d+', msg)
+                    if len(order_id) > 0:
+                        return get_order_status(order_id[0], responseText,db)
+                    else:
+                        return responseText
+                else:
+                    return responseText
     
     return "I do not understand..."
+
+
 
 
 if __name__ == "__main__":
@@ -56,6 +75,6 @@ if __name__ == "__main__":
         if sentence == "quit":
             break
 
-        resp = get_response(sentence)
+        resp = get_response(sentence, "")
         print(resp)
 
