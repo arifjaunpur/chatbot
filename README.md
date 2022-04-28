@@ -3,7 +3,7 @@
 ## How to use
 
 ```
-<script src="http://127.0.0.1:5050/static/app.js" defer></script>
+<script src="http://127.0.0.1:5000/static/app.js" defer></script>
 <script>
 	setTimeout(() => {
 		const event = new CustomEvent('chatbot.userInfo', {
