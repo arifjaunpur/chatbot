@@ -11,6 +11,10 @@ class Chatbox {
             chatBox: document.querySelector('.chatbox__support'),
             sendButton: document.querySelector('.send__button')
         }
+        this.name = '';
+        document.addEventListener('chatbot.userInfo', (e) => { 
+            this.name = e.detail.name;
+        }, false);
     }
 
     display() {
@@ -72,7 +76,7 @@ class Chatbox {
 
         fetch(`${this.apiUrl}predict`, {
             method: 'POST',
-            body: JSON.stringify({ message: text1, username: this.getCookie('userName') }),
+            body: JSON.stringify({ message: text1, username: this.name }),
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json'
@@ -145,3 +149,5 @@ const chatbox = new Chatbox();
 chatbox.appendHtml();
 chatbox.setup();
 chatbox.display();
+window.Chatbot = {};
+console.log(document.cookie);

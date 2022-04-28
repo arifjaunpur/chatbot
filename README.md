@@ -1,5 +1,21 @@
 # Chatbot
 
+## How to use
+
+```
+<script src="http://127.0.0.1:5050/static/app.js" defer></script>
+<script>
+	setTimeout(() => {
+		const event = new CustomEvent('chatbot.userInfo', {
+			detail: {
+				name:  '${firstName}'
+			}
+		});
+		document.dispatchEvent(event);
+	}, 100);
+</script>
+```
+
 ## Initial Setup:
 
 Clone repo and create a virtual environment
@@ -12,7 +28,7 @@ python3 -m venv venv
 
 ## Install dependencies
 ```
-pip install Flask torch torchvision nltk sqlalchemy pyodbc
+pip install Flask flask_cors torch torchvision nltk sqlalchemy pyodbc
 ```
 To install nltk package, run following command
 ```
