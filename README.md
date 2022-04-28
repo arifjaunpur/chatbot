@@ -28,7 +28,7 @@ python3 -m venv venv
 
 ## Install dependencies
 ```
-pip install Flask flask_cors torch torchvision nltk sqlalchemy pyodbc
+pip install Flask flask_cors torch torchvision nltk sqlalchemy flask_sqlalchemy pyodbc
 ```
 To install nltk package, run following command
 ```
