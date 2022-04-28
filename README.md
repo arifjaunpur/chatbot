@@ -22,6 +22,12 @@ Clone repo and create a virtual environment
 ```
 git clone https://github.com/arifjaunpur/chatbot.git
 cd chatbot
+
+#For Windows
+python -m venv venv
+.\venv\Scripts\activate 
+
+#For Linux and Mac
 python3 -m venv venv
  . venv/bin/activate
 ```
